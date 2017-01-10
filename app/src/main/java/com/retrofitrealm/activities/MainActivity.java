@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityInter
     }
 
     @Override
+    public Context getParentContext() {
+        return this;
+    }
+
+    @Override
     public void onBackPressed() {
         if (this.fragManager.getBackStackEntryCount() != 1) {
             fragManager.popBackStack();

@@ -2,12 +2,16 @@ package com.retrofitrealm.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.retrofitrealm.R;
+import com.retrofitrealm.adapters.PhotosAdapter;
 import com.retrofitrealm.database.Photo;
 import com.retrofitrealm.fragments.assets.BaseFragment;
 import com.retrofitrealm.networking.controllers.NetworkListener;
@@ -28,8 +32,8 @@ public class ImagesFragment extends BaseFragment {
 
     private static String TV_VALUE = "tvValue";
 
-    @BindView(R.id.tvTitle)
-    TextView tvTitle;
+    @BindView(R.id.rvPhotos)
+    RecyclerView rvPhotos;
 
     public static BaseFragment newInstance(String tvValue) {
         ImagesFragment imagesFragment = new ImagesFragment();
@@ -48,9 +52,15 @@ public class ImagesFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
-        tvTitle.setText(getArguments().getString(TV_VALUE));
+        setupRecyclerView();
         loadData();
         return view;
+    }
+
+    private void setupRecyclerView() {
+        rvPhotos.setHasFixedSize(true);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mainActivityInterface.getParentContext());
+        rvPhotos.setLayoutManager(mLayoutManager);
     }
 
     private void loadData() {
@@ -84,12 +94,18 @@ public class ImagesFragment extends BaseFragment {
             @Override
             public void execute(Realm realm) {
                 RealmResults<Photo> photoResults = realm.where(Photo.class).findAll();
-                loadIntoRecyclerview(photoResults);
+                if(photoResults.size() != 0) {
+                    loadIntoRecyclerview(photoResults);
+                } else {
+                    Toast.makeText(mainActivityInterface.getParentContext(), "No data in database", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
     private void loadIntoRecyclerview(RealmResults<Photo> photoRealmResults) {
         mainActivityInterface.printOut("Realm Results", photoRealmResults.size());
+        PhotosAdapter photosAdapter = new PhotosAdapter(photoRealmResults, mainActivityInterface.getParentContext());
+        rvPhotos.setAdapter(photosAdapter);
     }
 }

@@ -1,5 +1,7 @@
 package com.retrofitrealm.controllers;
 
+import android.content.Context;
+
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
@@ -14,4 +16,5 @@ public interface MainActivityInterface {
     Realm getRealmInstance();
     RealmConfiguration getRealmConfig();
     boolean isNetworkAvailable();
+    Context getParentContext();
 }
