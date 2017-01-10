@@ -5,9 +5,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.retrofitrealm.R;
 import com.retrofitrealm.assets.AppUtils;
 import com.retrofitrealm.controllers.MainActivityInterface;
 import com.retrofitrealm.networking.controllers.NetworkController;
@@ -29,6 +32,12 @@ public abstract class BaseFragment extends Fragment implements AppUtils {
     public NetworkController networkController;
 
     public abstract int getLayout();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -58,5 +67,11 @@ public abstract class BaseFragment extends Fragment implements AppUtils {
         realm = mainActivityInterface.getRealmInstance() != null ?
                 mainActivityInterface.getRealmInstance()
                 : Realm.getInstance(mainActivityInterface.getRealmConfig());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.app_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }

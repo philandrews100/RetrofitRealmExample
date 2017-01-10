@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/grid_layout"
+        android:title="Grid Layout" >
+        <!-- "file" submenu -->
+        <menu>
+            <item android:id="@+id/grid_two"
+                android:title="Grid Two" />
+            <item android:id="@+id/grid_three"
+                android:title="Grid Three" />
+            <item android:id="@+id/grid_four"
+                android:title="Grid Four" />
+        </menu>
+    </item>
+    <item android:id="@+id/vertical_layout"
+        android:title="Vertical Layout" />
+</menu>

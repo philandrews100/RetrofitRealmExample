@@ -2,11 +2,16 @@ package com.retrofitrealm.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,8 +64,7 @@ public class ImagesFragment extends BaseFragment {
 
     private void setupRecyclerView() {
         rvPhotos.setHasFixedSize(true);
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mainActivityInterface.getParentContext());
-        rvPhotos.setLayoutManager(mLayoutManager);
+        setToGrid(2);
     }
 
     private void loadData() {
@@ -107,5 +111,36 @@ public class ImagesFragment extends BaseFragment {
         mainActivityInterface.printOut("Realm Results", photoRealmResults.size());
         PhotosAdapter photosAdapter = new PhotosAdapter(photoRealmResults, mainActivityInterface.getParentContext());
         rvPhotos.setAdapter(photosAdapter);
+    }
+
+    private void setToGrid(int count) {
+        GridLayoutManager mLayoutManager = new GridLayoutManager(mainActivityInterface.getParentContext(), count);
+        rvPhotos.setLayoutManager(mLayoutManager);
+    }
+
+    private void setToVertical() {
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(mainActivityInterface.getParentContext());
+        rvPhotos.setLayoutManager(mLayoutManager);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.grid_two:
+                setToGrid(2);
+                return true;
+            case R.id.grid_three:
+                setToGrid(3);
+                return true;
+            case R.id.grid_four:
+                setToGrid(4);
+                return true;
+            case R.id.vertical_layout:
+                setToVertical();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
