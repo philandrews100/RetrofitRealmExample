@@ -13,4 +13,5 @@ public interface MainActivityInterface {
     void printOut(String name, Object value);
     Realm getRealmInstance();
     RealmConfiguration getRealmConfig();
+    boolean isNetworkAvailable();
 }

@@ -16,6 +16,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -48,24 +49,42 @@ public class ImagesFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         tvTitle.setText(getArguments().getString(TV_VALUE));
-        networkController.getAllPhotos(new NetworkListener<List<Photo>>() {
-            @Override
-            public void onResponse(Call<List<Photo>> call, Response<List<Photo>> response) {
-                final List<Photo> photoList = response.body();
-                realm.executeTransaction(new Realm.Transaction() {
-                    @Override
-                    public void execute(Realm realm) {
-                        realm.insertOrUpdate(photoList);
-                        mainActivityInterface.printOut("PhotoList", realm.where(Photo.class).count());
-                    }
-                });
-            }
+        loadData();
+        return view;
+    }
 
+    private void loadData() {
+        if(mainActivityInterface.isNetworkAvailable()) {
+            networkController.getAllPhotos(new NetworkListener<List<Photo>>() {
+                @Override
+                public void onResponse(Call<List<Photo>> call, final Response<List<Photo>> response) {
+                    realm.executeTransaction(new Realm.Transaction() {
+                        @Override
+                        public void execute(Realm realm) {
+                            realm.insertOrUpdate(response.body());
+                            loadIntoRecyclerView();
+                        }
+
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<List<Photo>> call, Throwable t) {
+                    t.printStackTrace();
+                    loadIntoRecyclerView();
+                }
+            });
+        } else {
+            loadIntoRecyclerView();
+        }
+    }
+
+    private void loadIntoRecyclerView() {
+        realm.executeTransaction(new Realm.Transaction() {
             @Override
-            public void onFailure(Call<List<Photo>> call, Throwable t) {
-                t.printStackTrace();
+            public void execute(Realm realm) {
+                RealmResults<Photo> photoResults = realm.where(Photo.class).findAll();
             }
         });
-        return view;
     }
 }
