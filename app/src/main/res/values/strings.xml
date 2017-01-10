@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">RetrofitRealm</string>
+
+    <string name="applicationId">493253271820a6db953118648751998de3c3e6f04496c250a68e6d87f1f71046</string>
+    <string name="applicationSecret">197775eee9143d9631dbb34d94615c450ea096030ae2d1197838908b526e2082</string>
+    <string name="callBackUrl">http://www.codinglasses.co.uk</string>
+    <string name="mainUrl">https://api.unsplash.com/</string>
+    <string name="defaultPerPage">30</string>
+</resources>

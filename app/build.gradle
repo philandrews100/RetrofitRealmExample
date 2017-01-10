@@ -1,0 +1,46 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'realm-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+    /**
+     * App Version Control
+     */
+    def versionMajor = 1
+    def versionMinor = 0
+    def versionPatch = 0
+    defaultConfig {
+        applicationId "com.retrofitrealm"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion", {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    compile "com.android.support:appcompat-v7:$rootProject.ext.appCompatVersion"
+    compile "com.android.support:recyclerview-v7:$rootProject.ext.recyclerView"
+    testCompile "junit:junit:$rootProject.ext.jUnitVersion"
+    compile "com.jakewharton:butterknife:$rootProject.ext.butterKnife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.ext.butterKnife"
+    compile "com.google.code.gson:gson:$rootProject.ext.gson"
+    compile "com.squareup.retrofit2:converter-gson:$rootProject.ext.retroFit"
+    compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retroFit"
+    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.ext.okHttpLoggingInterceptor"
+    compile "com.facebook.stetho:stetho:$rootProject.ext.stetho"
+    compile "com.facebook.stetho:stetho-okhttp3:$rootProject.ext.stetho"
+    compile "com.github.bumptech.glide:glide:$rootProject.ext.glide"
+}
