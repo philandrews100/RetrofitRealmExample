@@ -14,17 +14,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class ApiClient {
-    private static String TAG = ApiClient.class.getName();
-    private static Retrofit apiRetrofit = null;
+    private String TAG = ApiClient.class.getName();
+    private Retrofit apiRetrofit = null;
 
-    public static Retrofit getClient(String url) {
+    public ApiClient(String url) {
         if(apiRetrofit == null) {
             apiRetrofit = new Retrofit.Builder().client(getOkClient()).baseUrl(url).addConverterFactory(GsonConverterFactory.create()).build();
         }
+    }
+
+    public Retrofit getApiRetrofit() {
         return apiRetrofit;
     }
 
-    private static OkHttpClient getOkClient() {
+    private OkHttpClient getOkClient() {
         HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
             public void log(String message) {

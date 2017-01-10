@@ -62,7 +62,7 @@ public class ImagesFragment extends BaseFragment {
                         @Override
                         public void execute(Realm realm) {
                             realm.insertOrUpdate(response.body());
-                            loadIntoRecyclerView();
+                            loadIntoRecyclerview(realm.where(Photo.class).findAll());
                         }
 
                     });
@@ -71,20 +71,25 @@ public class ImagesFragment extends BaseFragment {
                 @Override
                 public void onFailure(Call<List<Photo>> call, Throwable t) {
                     t.printStackTrace();
-                    loadIntoRecyclerView();
+                    loadFromDatabase();
                 }
             });
         } else {
-            loadIntoRecyclerView();
+            loadFromDatabase();
         }
     }
 
-    private void loadIntoRecyclerView() {
+    private void loadFromDatabase() {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmResults<Photo> photoResults = realm.where(Photo.class).findAll();
+                loadIntoRecyclerview(photoResults);
             }
         });
+    }
+
+    private void loadIntoRecyclerview(RealmResults<Photo> photoRealmResults) {
+        mainActivityInterface.printOut("Realm Results", photoRealmResults.size());
     }
 }
